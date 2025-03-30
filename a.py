@@ -49,68 +49,34 @@ val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False) # 不打乱�
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False) # 不打乱数据
 
 # 定义CNN模型
-class SimpleCNNWithPooling(nn.Module):
+class SimpleCNN(nn.Module):
     def __init__(self, input_features, num_classes): # 输入特征数和输出类别数
-        super(SimpleCNNWithPooling, self).__init__() # 继承 nn.Module 类
+        super(SimpleCNN, self).__init__() # 继承 nn.Module 类
         # 定义卷积层和全连接层
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=(1,3), stride=1, padding=(0,1)) # 输入通道数为 1，输出通道数为 32，卷积核大小为 3x3，步长为 1，填充为 1
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1) # 输入通道数为 1，输出通道数为 32，卷积核大小为 3x3，步长为 1，填充为 1
         # padding=1 使得输出大小与输入大小相同
-        self.pool1 = nn.MaxPool2d(kernel_size=(1,2), stride=(1,2))  # 最大池化层
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=(1,3), stride=1, padding=(0,1)) # 输入通道数为 32，输出通道数为 64，卷积核大小为 3x3，步长为 1，填充为 1
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1) # 输入通道数为 32，输出通道数为 64，卷积核大小为 3x3，步长为 1，填充为 1
         # padding=1 使得输出大小与输入大小相同
-        self.pool2 = nn.AvgPool2d(kernel_size=(1,2), stride=(1,2))  # 平均池化层
-        self.fc1 = nn.Linear(64 * (input_features//4), 128) # 输入特征数为 64 * (input_features//4)，输出特征数为 128
-        # 这里的 input_features//4 是因为经过两次池化后，特征图的大小减小了四分之一
-        # 64 是第二个卷积层的输出通道数
-        # 128 是全连接层的输出特征数
+        self.fc1 = nn.Linear(64 * input_features, 128) # 输入特征数为 64 * input_features，输出特征数为 128
+        # 64 * input_features 是因为经过两次卷积后，特征图的大小不变
         self.fc2 = nn.Linear(128, num_classes) # 输入特征数为 128，输出特征数为 num_classes
         # num_classes 是分类的类别数
-         
-    def forward(self, x, show_pooling=False):
-        x = x.unsqueeze(1).unsqueeze(2) # 添加通道维度和高度维度,以适应CNN的输入要求
+
+    def forward(self, x):
+        x = x.unsqueeze(1).unsqueeze(3) # 添加通道维度和高度维度,以适应CNN的输入要求
         # x 的形状变为 (batch_size, 1, input_features, 1)
         # 这里的 1 是因为我们只处理一维数据，卷积操作需要四维输入，所以需要添加两个维度
-      
-        # 第一层卷积+池化
-        x = torch.relu(self.conv1(x))
-        if show_pooling:
-            print("Before Pooling 1:", x.shape)
-            plt.figure(figsize=(10,4))
-            plt.subplot(1,2,1)
-            plt.title("Before Pooling 1")
-            plt.imshow(x[0,0].cpu().detach().numpy(), cmap='viridis')
-        x = self.pool1(x)
-        if show_pooling:
-            print("After MaxPooling 1:", x.shape)
-            plt.subplot(1,2,2)
-            plt.title("After MaxPooling 1")
-            plt.imshow(x[0,0].cpu().detach().numpy(), cmap='viridis')
-            plt.show()
-        
-        # 第二层卷积+池化
+        x = torch.relu(self.conv1(x)) # 激活函数
         x = torch.relu(self.conv2(x))
-        if show_pooling:
-            print("Before Pooling 2:", x.shape)
-            plt.figure(figsize=(10,4))
-            plt.subplot(1,2,1)
-            plt.title("Before Pooling 2")
-            plt.imshow(x[0,0].cpu().detach().numpy(), cmap='viridis')
-        x = self.pool2(x)
-        if show_pooling:
-            print("After AvgPooling 2:", x.shape)
-            plt.subplot(1,2,2)
-            plt.title("After AvgPooling 2")
-            plt.imshow(x[0,0].cpu().detach().numpy(), cmap='viridis')
-            plt.show()
-        
-        x = x.view(x.size(0), -1)  # 展平
-        x = torch.relu(self.fc1(x))
-        x = self.fc2(x)
+        x = x.view(x.size(0), -1) # 展平操作，将多维张量展平为一维张量
+        x = torch.relu(self.fc1(x)) 
+        x = self.fc2(x) # 输出层
         return x 
+
 # 模型实例化并移动到设备
 input_features = features.shape[1] # 输入特征数
 # 这里的 input_features 是特征的维度
-model = SimpleCNNWithPooling(input_features=input_features, num_classes=7).to(device) #cuda有7个类别
+model = SimpleCNN(input_features=input_features, num_classes=7).to(device) #cuda有7个类别
 
 # 定义损失函数和优化器
 criterion = nn.CrossEntropyLoss() # 交叉熵损失函数
