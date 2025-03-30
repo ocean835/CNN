@@ -31,6 +31,8 @@
 
 8、pandas
 
+9、matplotlib
+
 ---
 
 ### 环境设置：
