@@ -1,0 +1,24 @@
+Using device: cuda
+Epoch 1, Loss: 1.4872260041096632, Time: 0.97s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 70.47970479704797%
+Epoch 2, Loss: 0.5544249211602351, Time: 0.47s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 74.53874538745387%
+Epoch 3, Loss: 0.23518303913228653, Time: 0.46s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 72.32472324723247%
+Epoch 4, Loss: 0.09357335788252599, Time: 0.46s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 70.84870848708488%
+Epoch 5, Loss: 0.03983789418057045, Time: 0.47s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 72.32472324723247%
+Epoch 6, Loss: 0.015476097669520909, Time: 0.46s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 71.58671586715867%
+Epoch 7, Loss: 0.005253014549345928, Time: 0.47s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 70.11070110701107%
+Epoch 8, Loss: 0.0033028553024290457, Time: 0.47s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 71.21771217712177%
+Epoch 9, Loss: 0.00247786076129962, Time: 0.46s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 71.58671586715867%
+Epoch 10, Loss: 0.0020572215169736676, Time: 0.46s, Memory Allocated: 196.60MB, Max Memory Allocated: 241.86MB
+Validation Accuracy: 70.47970479704797%
+Total Training Time: 5.29s
+Test Accuracy: 75.27675276752767%
+Test Time: 0.01s, Memory Allocated: 196.56MB, Max Memory Allocated: 241.86MB
